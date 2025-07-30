@@ -7,17 +7,24 @@ def generate_launch_description():
             package='usb_cam',
             executable='usb_cam_node_exe',
             name='usb_cam',
-            parameters=[{'video_device': '/dev/video2'}],
+            parameters=[{'video_device': '/dev/video2'}],#тут нужно поменять нужную камеру
             remappings=[('image_raw', '/camera/image_raw')],
         ),
         Node(
-            package='figure_detector',
+            package='figure_detector',#вся схемка
             executable='figure_node',
             name='figure_node',
             output='screen'
+        ),
+        Node(
+            package='rqt_image_view',
+            executable='rqt_image_view',
+            name='rqt_image_view',
+            arguments=['/camera/image_raw'],  # топик камеры
+            output='screen'
         )
     ])
-        # 📝 Отладка: можно вручную проверить подключенные камеры командой:
+        # Отладка: можно вручную проверить подключенные камеры командой:
         # v4l2-ctl --list-devices
         #
         # И запустить нужную вручную так:
