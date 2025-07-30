@@ -1,0 +1,20 @@
+running develop
+running egg_info
+creating figure_detector.egg-info
+writing figure_detector.egg-info/PKG-INFO
+writing dependency_links to figure_detector.egg-info/dependency_links.txt
+writing entry points to figure_detector.egg-info/entry_points.txt
+writing requirements to figure_detector.egg-info/requires.txt
+writing top-level names to figure_detector.egg-info/top_level.txt
+writing manifest file 'figure_detector.egg-info/SOURCES.txt'
+reading manifest file 'figure_detector.egg-info/SOURCES.txt'
+writing manifest file 'figure_detector.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/faust/ros2_ws/src/figure_detector/install/figure_detector/lib/python3.12/site-packages/figure-detector.egg-link (link to .)
+Installing figure_node script to /home/faust/ros2_ws/src/figure_detector/install/figure_detector/lib/figure_detector
+
+Installed /home/faust/ros2_ws/src/figure_detector/build/figure_detector
+running symlink_data
+symbolically linking /home/faust/ros2_ws/src/figure_detector/build/figure_detector/package.xml -> /home/faust/ros2_ws/src/figure_detector/install/figure_detector/share/figure_detector
+creating /home/faust/ros2_ws/src/figure_detector/install/figure_detector/share/figure_detector/launch
+symbolically linking /home/faust/ros2_ws/src/figure_detector/build/figure_detector/launch/figure_launch.py -> /home/faust/ros2_ws/src/figure_detector/install/figure_detector/share/figure_detector/launch

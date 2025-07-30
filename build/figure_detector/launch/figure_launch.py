@@ -1,0 +1,1 @@
+/home/faust/ros2_ws/src/figure_detector/launch/figure_launch.py

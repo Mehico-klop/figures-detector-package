@@ -1,0 +1,2 @@
+[console_scripts]
+figure_node = figure_detector.figure_node:main
