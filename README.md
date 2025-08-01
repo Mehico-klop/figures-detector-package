@@ -3,8 +3,10 @@
 по поводу редактирования переменных если надо расскажу в конце, первым делом как запускать.
 ЗАВИСИМОСТИ
 sudo apt install ros-jazzy-usb-cam (jazzy у меня поэтому везде будет jazzy наверняка знаешь на ято нужно тебе поменять)
-sudo apt install ros-jazzy-rqt-image-view
-sudo apt install v4l-utils
+1. sudo apt install ros-jazzy-rqt-image-view
+2. sudo apt install v4l-utils
+3. pip install ultralytics
+4. pip install opencv-python numpy
 
 переходим в файл в figure_launch(в нем надо будет 1 раз проверить камеру и поменять значение)
 1. v4l2-ctl --list-devices (для определения на каких числах находится нужная камера)

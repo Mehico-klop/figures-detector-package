@@ -16,13 +16,7 @@ def generate_launch_description():
             name='figure_node',
             output='screen'
         ),
-        Node(
-            package='rqt_image_view',
-            executable='rqt_image_view',
-            name='rqt_image_view',
-            arguments=['/camera/image_raw'],  # топик камеры
-            output='screen'
-        )
+
     ])
         # Отладка: можно вручную проверить подключенные камеры командой:
         # v4l2-ctl --list-devices

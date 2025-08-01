@@ -5,12 +5,9 @@ width, height = 640, 480
 
 shapes = ['circle', 'square', 'triangle']
 colors = {
-    'white':(255,255,255),
+
     'black': (0, 0, 0),
-    'red': (0, 0, 255),
-    'green': (0, 255, 0),
-    'blue': (255, 0, 0),
-    'yellow': (0, 255, 255),
+    
 }
 
 classes = [f"{color}_{shape}" for shape in shapes for color in colors]
@@ -34,7 +31,7 @@ def draw_shape(image, label):
 
     return x, y, size*2, size*2
 
-def create_dataset(path, count_per_class=50):
+def create_dataset(path, count_per_class=100):
     os.makedirs(f'{path}/images/train', exist_ok=True)
     os.makedirs(f'{path}/labels/train', exist_ok=True)
 

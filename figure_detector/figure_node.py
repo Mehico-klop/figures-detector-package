@@ -14,7 +14,7 @@ class FigureDetector(Node):
 
         # Путь к модели
         pkg_path = Path(get_package_share_directory('figure_detector'))
-        model_path = pkg_path / 'models' / 'best.pt'
+        model_path = Path(__file__).parent.parent / 'models' / 'best.pt'
 
         # Загрузка YOLO
         self.model = YOLO(str(model_path))
