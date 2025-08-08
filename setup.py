@@ -19,7 +19,9 @@ setup(
     maintainer_email='vitosik3000@gmail.com',
     entry_points={
         'console_scripts': [
+            'camera_publisher_node = figure_detector.camera_publisher_node:main',
             'figure_node = figure_detector.figure_node:main',
+            'video_saver_node = figure_detector.video_saver_node:main',
         ],
     },
 )

@@ -1,28 +1,42 @@
+# Базовый образ ROS 2 Jazzy
 FROM ros:jazzy
 
-# Установим зависимости ROS 2 и Python
+# Установка зависимостей
 RUN apt update && apt install -y \
     python3-pip \
     python3-colcon-common-extensions \
+    python3-opencv \
+    ros-jazzy-cv-bridge \
     ros-jazzy-usb-cam \
-    ros-jazzy-rqt-image-view \
+    ros-jazzy-image-transport \
+    libgl1 \
+    ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
-# Установим нужные pip-зависимости
-RUN pip3 install --default-timeout=300 --no-cache-dir --break-system-packages --ignore-installed \
+RUN apt remove -y python3-numpy
+
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
+# Установка Python-зависимостей
+RUN pip3 install --no-cache-dir \
+    "numpy<2.0" \
     ultralytics \
     opencv-python
-    
-# Копируем рабочее пространство внутрь контейнера
+
+# Создание рабочего каталога
 WORKDIR /workspace
-COPY . /workspace
-
-# Собираем ROS 2 workspace
+RUN mkdir -p video_data/video
+COPY . /workspace/ros2_ws/src/figure_detector
+# Сборка пакетов
 RUN . /opt/ros/jazzy/setup.sh && \
-    colcon build --packages-select figure_detector
+    cd ros2_ws && \
+    colcon build
 
-# Устанавливаем путь до весов модели
-ENV YOLO_MODEL_PATH=/workspace/runs/detect/train/weights/best.pt
+# Исходная среда
+SHELL ["/bin/bash", "-c"]
 
-# Source ROS 2 и запускаем launch файл
-CMD ["/bin/bash", "-c", "source /opt/ros/jazzy/setup.sh && source install/setup.sh && ros2 launch figure_detector figure_launch.py"]
+# Загрузка окружения ROS и установка рабочей директории
+RUN echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
+RUN echo "source /workspace/ros2_ws/install/setup.bash" >> ~/.bashrc
+
+# Запуск по умолчанию
+CMD ["bash"]

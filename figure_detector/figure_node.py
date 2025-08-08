@@ -1,6 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
+from std_msgs.msg import String
 from cv_bridge import CvBridge
 from ultralytics import YOLO
 import cv2
@@ -13,23 +14,25 @@ class FigureDetector(Node):
         self.bridge = CvBridge()
 
         # Путь к модели
-        pkg_path = Path(get_package_share_directory('figure_detector'))
-        model_path = Path(__file__).parent.parent / 'models' / 'best.pt'
+        model_path = Path(get_package_share_directory('figure_detector')) / 'models' / 'best.pt'
+
 
         # Загрузка YOLO
         self.model = YOLO(str(model_path))
         self.get_logger().info(f"YOLOv11 модель загружена: {model_path}")
 
-        # Подписка на камеру
+        # Подписка на изображение с камеры
         self.sub = self.create_subscription(Image, '/camera/image_raw', self.callback, 10)
 
+        # Публикатор результатов в текстовом виде
+        self.pub = self.create_publisher(String, '/detected_objects', 10)
+
     def callback(self, msg):
-        # Конвертация ROS-изображения в OpenCV
+        # Преобразование изображения ROS в OpenCV
         frame = self.bridge.imgmsg_to_cv2(msg, 'bgr8')
 
-        # Детекция
+        # YOLO детекция
         results = self.model(frame)[0]
-
         found_objects = []
 
         for box in results.boxes:
@@ -38,19 +41,24 @@ class FigureDetector(Node):
             name = self.model.names[cls]
             found_objects.append(f"{name} ({conf:.2f})")
 
-            # Для отладки рисуем прямоугольники на видеоряде
+            # Нарисуем прямоугольники
             x1, y1, x2, y2 = map(int, box.xyxy[0])
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0,255,0), 2)
             cv2.putText(frame, f'{name} {conf:.2f}', (x1, y1 - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0,255,0), 2)
 
-        # Вывод в терминал
+        # Публикация
+        msg_out = String()
         if found_objects:
-            self.get_logger().info(f"Вижу: {', '.join(found_objects)}")
+            msg_out.data = f"Обнаружены объекты: {', '.join(found_objects)}"
+            self.get_logger().info(msg_out.data)
         else:
+            msg_out.data = "Ничего не обнаружено"
             self.get_logger().info("Ничего не вижу")
 
-        # Отображение окна (опционально)
+        self.pub.publish(msg_out)
+
+        # Показываем окно (опционально)
         cv2.imshow("YOLOv11", frame)
         cv2.waitKey(1)
 
